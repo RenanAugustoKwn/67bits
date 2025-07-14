@@ -20,6 +20,5 @@ public class EnemyRagdoll : MonoBehaviour
         }
 
         Destroy(GetComponent<Animator>());
-        Destroy(this); // Opcional: remove o script após ativar
     }
 }

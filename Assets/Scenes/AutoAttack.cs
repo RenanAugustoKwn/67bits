@@ -15,13 +15,14 @@ public class AutoAttack : MonoBehaviour
             {
                 if (col.CompareTag("Enemy"))
                 {
-                    /*EnemyRagdoll ragdoll = col.GetComponent<EnemyRagdoll>();
+                    Debug.Log("Encostou!!!!!!");
+                    EnemyRagdoll ragdoll = col.GetComponent<EnemyRagdoll>();
                     if (ragdoll != null)
                     {
                         ragdoll.ActivateRagdoll();
                         lastAttackTime = Time.time;
                         break;
-                    }*/
+                    }
                 }
             }
         }
