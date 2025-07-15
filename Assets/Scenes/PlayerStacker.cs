@@ -30,6 +30,7 @@ public class PlayerStacker : MonoBehaviour
                 Vector3 offset = Vector3.up * (stackSpacingY * stacked.Count);
                 rag.StackOnto(stackPoint, offset);
                 stacked.Add(rag);
+                rag.gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
                 break;                                   // pega um por vez
             }
         }
