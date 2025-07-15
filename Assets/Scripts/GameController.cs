@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class GameController : MonoBehaviour
     public Material[] levelMaterials;
     public TextMeshProUGUI coinstextMeshPro;
     public TextMeshProUGUI leveltextMeshPro;
+    public GameObject panel;
+    private bool isPaused = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +22,26 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.JoystickButton3)) OpenPainel();
+        if (isPaused && Input.GetKeyDown(KeyCode.JoystickButton0)) BuyLevelUp(3);
+    }
+    public void OpenPainel()
+    {
+        TogglePause();
+    }
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        if (isPaused)
+        {
+            panel.SetActive(true);
+            DisableStackInertiaScripts();
+        }
+        else {
+            panel.SetActive(false);
+            EnableStackInertiaScripts();
+        }
+            Time.timeScale = isPaused ? 0f : 1f;
 
     }
     public void AddCoins(int value)
@@ -32,6 +56,8 @@ public class GameController : MonoBehaviour
         if (coins < price)
         {
             Debug.Log("Sem moedas suficientes");
+            panel.SetActive(false);
+            TogglePause();
             return;
         }
 
@@ -40,6 +66,8 @@ public class GameController : MonoBehaviour
 
         AttText();
         ApplyMaterialForLevel();
+        panel.SetActive(false);
+        TogglePause();
         Debug.Log($"Level up! Novo nível = {level}");
     }
     private void AttText()
@@ -78,5 +106,23 @@ public class GameController : MonoBehaviour
             newMats[i] = levelMaterials[idx];
 
         smr.materials = newMats;
+    }
+    void DisableStackInertiaScripts()
+    {
+        StackInertia[] inertiaScripts = FindObjectsByType<StackInertia>(FindObjectsSortMode.None);
+        foreach (StackInertia script in inertiaScripts)
+        {
+            script.enabled = false;
+        }
+    }
+
+    void EnableStackInertiaScripts()
+    {
+        StackInertia[] inertiaScripts = FindObjectsByType<StackInertia>(FindObjectsSortMode.None);
+        foreach (StackInertia script in inertiaScripts)
+        {
+            script.enabled = true;
+            script.ResetPreviousPosition();
+        }
     }
 }

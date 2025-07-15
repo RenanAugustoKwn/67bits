@@ -91,4 +91,11 @@ public class StackInertia : MonoBehaviour
         if (angle < -180) angle += 360;
         return Mathf.Clamp(angle, min, max);
     }
+    public void ResetPreviousPosition()
+    {
+        if (transform.parent != null)
+        {
+            previousParentPosition = transform.parent.position;
+        }
+    }
 }

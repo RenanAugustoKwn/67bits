@@ -13459,10 +13459,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 845314638}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1298062077}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: OpenPainel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24218,7 +24218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coins: 0
-  level: 1
+  level: 10
   character_man: {fileID: 443882821}
   levelMaterials:
   - {fileID: 2100000, guid: 9d453a4066f815e43a62e11f3c14c2eb, type: 2}
@@ -24228,6 +24228,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9b4b4956e90bfe14faeb50d5ebe9f0fb, type: 2}
   coinstextMeshPro: {fileID: 831844173}
   leveltextMeshPro: {fileID: 1040167750}
+  panel: {fileID: 845314638}
 --- !u!144 &1304321647
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -41158,9 +41159,41 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 842817672513586018, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 842817672513586018, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 842817672513586018, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 842817672513586018, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 864924847572314591, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755444854766876758, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755444854766876758, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755444854766876758, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755444854766876758, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5044213199025717614, guid: fc4491792a445a24c9d328905b88c2a2, type: 3}
       propertyPath: gameController
