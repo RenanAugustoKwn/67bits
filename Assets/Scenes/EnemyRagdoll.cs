@@ -13,6 +13,7 @@ public class EnemyRagdoll : MonoBehaviour
     [HideInInspector] public bool isRagdolled;
     [HideInInspector] public bool isStacked;
     private bool delivered;
+    public bool pickupBool = true;
 
     void Awake()
     {
@@ -89,6 +90,7 @@ public class EnemyRagdoll : MonoBehaviour
     /* ---------- Soltar (sem impulso) ---------- */
     public void UnstackAndDrop()
     {
+        pickupBool = false;
         if (!isStacked) return;
 
         transform.SetParent(null);                     // sai da pilha
@@ -114,11 +116,16 @@ public class EnemyRagdoll : MonoBehaviour
     {
         if (!delivered && other.CompareTag("GreenGround"))
         {
+            pickupBool = false;
             delivered = true;
             var gameController = FindAnyObjectByType<GameController>();
             gameController.AddCoins(1);
-            Destroy(boyRoot.gameObject, 1f);
-            Destroy(gameObject,1.3f);                       // remove Enemy inteiro
+            Destroy(boyRoot.gameObject, 0.5f);
+            Destroy(gameObject,1f);                       // remove Enemy inteiro
+        }
+        else if(other.CompareTag("Ground"))
+        {
+            pickupBool = true;
         }
     }
 }

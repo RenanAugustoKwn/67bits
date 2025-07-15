@@ -34,7 +34,7 @@ public class PlayerStacker : MonoBehaviour
         foreach (var h in hits)
         {
             EnemyRagdoll rag = h.GetComponentInParent<EnemyRagdoll>();
-            if (rag != null && rag.isRagdolled && !rag.isStacked)
+            if (rag != null && rag.isRagdolled && !rag.isStacked && rag.pickupBool)
             {
                 Vector3 offset = Vector3.up * (stackSpacingY);
                 if (stacked.Count != 0)
@@ -57,11 +57,9 @@ public class PlayerStacker : MonoBehaviour
     void DropEnemy()
     {
         if (stacked.Count == 0) return;
-
         EnemyRagdoll rag = stacked[^1];
         Destroy(rag.gameObject.GetComponent<StackInertia>());
         stacked.RemoveAt(stacked.Count - 1);
-
         rag.UnstackAndDrop();                            // cai naturalmente, Boy separado
 
     }
