@@ -7,7 +7,8 @@ public class GameController : MonoBehaviour
     public int level = 1;
     public GameObject character_man;  // Referência ao personagem
     public Material[] levelMaterials;
-    public TextMeshProUGUI textMeshPro;
+    public TextMeshProUGUI coinstextMeshPro;
+    public TextMeshProUGUI leveltextMeshPro;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,7 +23,7 @@ public class GameController : MonoBehaviour
     public void AddCoins(int value)
     {
         coins += value;
-        AttCoinText();
+        AttText();
         Debug.Log("Total de moedas: " + coins);
 
     }
@@ -37,13 +38,14 @@ public class GameController : MonoBehaviour
         coins -= price;
         level++;
 
-        AttCoinText();
+        AttText();
         ApplyMaterialForLevel();
         Debug.Log($"Level up! Novo nível = {level}");
     }
-    private void AttCoinText()
+    private void AttText()
     {
-        textMeshPro.text = "Coins = " + coins.ToString();
+        coinstextMeshPro.text = "Coins = " + coins.ToString();
+        leveltextMeshPro.text = "Level = " + level.ToString();
     }
     private void ApplyMaterialForLevel()
     {
