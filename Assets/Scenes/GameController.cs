@@ -1,11 +1,13 @@
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
     public int coins = 0;
-    public int level = 0;
+    public int level = 1;
     public GameObject character_man;  // Referência ao personagem
     public Material[] levelMaterials;
+    public TextMeshProUGUI textMeshPro;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,7 +22,9 @@ public class GameController : MonoBehaviour
     public void AddCoins(int value)
     {
         coins += value;
+        AttCoinText();
         Debug.Log("Total de moedas: " + coins);
+
     }
     public void BuyLevelUp(int price)
     {
@@ -33,8 +37,13 @@ public class GameController : MonoBehaviour
         coins -= price;
         level++;
 
-        Debug.Log($"Level up! Novo nível = {level}");
+        AttCoinText();
         ApplyMaterialForLevel();
+        Debug.Log($"Level up! Novo nível = {level}");
+    }
+    private void AttCoinText()
+    {
+        textMeshPro.text = "Coins = " + coins.ToString();
     }
     private void ApplyMaterialForLevel()
     {

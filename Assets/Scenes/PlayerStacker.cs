@@ -5,6 +5,7 @@ public class PlayerStacker : MonoBehaviour
 {
     [Header("Referência")]
     public Transform stackPoint;            // objeto vazio nas costas
+    public GameController gameController;
 
     [Header("Configuração")]
     public float stackSpacingY = 1.2f;
@@ -22,6 +23,14 @@ public class PlayerStacker : MonoBehaviour
     void TryPickupEnemy()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange);
+
+                // Limite com base no level atual
+        if (stacked.Count >= gameController.level)
+        {
+            Debug.Log("Limite de empilhamento atingido para este nível.");
+            return;
+        }
+
         foreach (var h in hits)
         {
             EnemyRagdoll rag = h.GetComponentInParent<EnemyRagdoll>();

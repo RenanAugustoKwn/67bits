@@ -5862,12 +5862,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coins: 0
-  level: 0
+  level: 1
   character_man: {fileID: 443882821}
   levelMaterials:
   - {fileID: 2100000, guid: e3ae26a1e8deeb0428102b4ff9480944, type: 2}
   - {fileID: 2100000, guid: c45b407bf23c5184c9a380606c8e31b4, type: 2}
   - {fileID: 2100000, guid: 2424f35d7d625da46a5d60262065a999, type: 2}
+  textMeshPro: {fileID: 831844173}
 --- !u!144 &1308001602
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -10635,6 +10636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stackPoint: {fileID: 1464028346}
+  gameController: {fileID: 1298062077}
   stackSpacingY: 0.8
   pickupRange: 2
 --- !u!144 &1917523906
