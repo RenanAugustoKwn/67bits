@@ -4,33 +4,30 @@ public class AutoAttack : MonoBehaviour
 {
     public float attackRange = 2f;
     public float attackCooldown = 1f;
-    private float lastAttackTime;
+    private float lastAttack;
 
     void Update()
     {
-        if (Time.time - lastAttackTime >= attackCooldown)
+        if (Time.time - lastAttack < attackCooldown) return;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, attackRange);
+        foreach (var hit in hits)
         {
-            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange);
-            foreach (Collider col in hitEnemies)
+            var rag = hit.GetComponent<EnemyRagdoll>();
+            if (rag != null && !rag.isRagdolled)
             {
-                if (col.CompareTag("Enemy"))
-                {
-                    Debug.Log("Encostou!!!!!!");
-                    EnemyRagdoll ragdoll = col.GetComponent<EnemyRagdoll>();
-                    if (ragdoll != null)
-                    {
-                        ragdoll.ActivateRagdoll();
-                        lastAttackTime = Time.time;
-                        break;
-                    }
-                }
+                rag.ActivateRagdoll();
+                lastAttack = Time.time;
+                break;
             }
         }
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+#endif
 }

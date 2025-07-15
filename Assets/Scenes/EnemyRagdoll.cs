@@ -3,34 +3,55 @@
 [RequireComponent(typeof(Collider))]
 public class EnemyRagdoll : MonoBehaviour
 {
-    [Header("Arraste TODOS os Rigidbodies dos ossos aqui")]
-    public Rigidbody[] ragdollBodies;
+    [Header("Referências (arraste no Inspector)")]
+    public Transform boyRoot;          // objeto “Boy”
+    public Transform hips;             // osso Hips do ragdoll
+    public Rigidbody[] ragdollBodies;  // todos os Rigidbodies dos ossos
 
+    private Collider capsuleCol;       // CapsuleCollider do Enemy
+    private Rigidbody rigidbodyEnemy;
     [HideInInspector] public bool isRagdolled;
     [HideInInspector] public bool isStacked;
+    private bool delivered;
 
-    private bool delivered;        // evita múltiplas recompensas
+    void Awake()
+    {
+        capsuleCol = GetComponent<Collider>();
+        rigidbodyEnemy = GetComponent<Rigidbody>();
+    }
 
-    /* ---------- Ragdoll ON ---------- */
+    /* ---------- Derrubar ---------- */
     public void ActivateRagdoll()
     {
         if (isRagdolled) return;
 
-        foreach (var rb in ragdollBodies)
+        boyRoot.SetParent(null);                       // Boy sai da hierarquia
+
+        foreach (var rb in ragdollBodies)              // física ON
         {
             rb.isKinematic = false;
-            rb.GetComponent<Collider>().enabled = true;
+            var c = rb.GetComponent<Collider>();
+            if (c) c.enabled = true;
         }
 
-        var anim = GetComponent<Animator>();
+        var anim = boyRoot.GetComponentInChildren<Animator>();
         if (anim) Destroy(anim);
 
-        // habilita collider raiz para detecção de coleta
-        var rootCol = GetComponent<Collider>();
-        if (rootCol) { rootCol.enabled = true; rootCol.isTrigger = false; }
+        if (capsuleCol) 
+        { 
+            capsuleCol.isTrigger = true; // evita colisão com ragdoll
+            rigidbodyEnemy.constraints = RigidbodyConstraints.FreezeAll;
+        }   
 
         isRagdolled = true;
         isStacked = false;
+    }
+
+    /* ---------- Enemy segue o Hips ---------- */
+    void FixedUpdate()
+    {
+        if (isRagdolled && !isStacked && hips != null)
+            transform.position = hips.position;
     }
 
     /* ---------- Empilhar ---------- */
@@ -41,50 +62,55 @@ public class EnemyRagdoll : MonoBehaviour
         foreach (var rb in ragdollBodies)
         {
             rb.isKinematic = true;
-            rb.GetComponent<Collider>().enabled = false;
+            var c = rb.GetComponent<Collider>();
+            if (c) c.enabled = false;
         }
 
-        var rootCol = GetComponent<Collider>();
-        if (rootCol) rootCol.enabled = false;
+        boyRoot.SetParent(transform);                  // Boy volta como filho
+        boyRoot.localPosition = Vector3.zero;
+        hips.localPosition = Vector3.zero;
+        boyRoot.localRotation = Quaternion.identity;
 
-        transform.SetParent(parent);
+        if (capsuleCol) capsuleCol.isTrigger = false;  // volta a colidir na pilha
+
+        transform.SetParent(parent);                   // empilha no player
         transform.localPosition = offset;
         transform.localRotation = Quaternion.identity;
 
         isStacked = true;
     }
 
-    /* ---------- Desempilhar + arremessar ---------- */
-    public void UnstackAndActivatePhysics(Vector3 impulse)
+    /* ---------- Soltar (sem impulso) ---------- */
+    public void UnstackAndDrop()
     {
         if (!isStacked) return;
 
-        transform.SetParent(null);
+        transform.SetParent(null);                     // sai da pilha
+
+        // Boy sai da hierarquia para novo ciclo
+        boyRoot.SetParent(null);
 
         foreach (var rb in ragdollBodies)
         {
             rb.isKinematic = false;
-            rb.GetComponent<Collider>().enabled = true;
+            var c = rb.GetComponent<Collider>();
+            if (c) c.enabled = true;
         }
 
-        var rootCol = GetComponent<Collider>();
-        if (rootCol) { rootCol.enabled = true; rootCol.isTrigger = false; }
+        if (capsuleCol) capsuleCol.isTrigger = true;   // evita colisão
 
-        isStacked = false;
-
-        ragdollBodies[0].AddForce(impulse, ForceMode.Impulse);
+        isStacked = false;                             // corpo cai naturalmente
+        // continua em ragdoll, pronto para ser recolhido com T
     }
 
-    /* ---------- Recompensa no chão verde ---------- */
-    private void OnCollisionEnter(Collision col)
+    /* ---------- Destruir no chão verde ---------- */
+    private void OnTriggerEnter(Collider other)
     {
-        if (delivered) return;
-
-        if (col.collider.CompareTag("GreenGround"))
+        if (!delivered && other.CompareTag("GreenGround"))
         {
             delivered = true;
-            //PlayerCurrency.Add(10);             // +10 moedas
-            Destroy(gameObject);                // some da cena
+            Destroy(boyRoot.gameObject, 2f);
+            Destroy(gameObject,2.3f);                       // remove Enemy inteiro
         }
     }
 }
