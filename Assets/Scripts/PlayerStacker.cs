@@ -56,7 +56,7 @@ public class PlayerStacker : MonoBehaviour
         }
     }
     /* ---------- Coletar ---------- */
-    void TryPickupEnemy()
+    public void TryPickupEnemy()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange);
 
@@ -90,7 +90,7 @@ public class PlayerStacker : MonoBehaviour
     }
 
     /* ---------- Soltar ---------- */
-    void DropEnemy()
+    public void DropEnemy()
     {
         if (stacked.Count == 0) return;
         EnemyRagdoll rag = stacked[^1];
