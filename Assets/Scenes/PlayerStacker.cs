@@ -27,11 +27,19 @@ public class PlayerStacker : MonoBehaviour
             EnemyRagdoll rag = h.GetComponentInParent<EnemyRagdoll>();
             if (rag != null && rag.isRagdolled && !rag.isStacked)
             {
-                Vector3 offset = Vector3.up * (stackSpacingY * stacked.Count);
-                rag.StackOnto(stackPoint, offset);
-                stacked.Add(rag);
+                Vector3 offset = Vector3.up * (stackSpacingY);
+                if(stacked.Count != 0)
+                {
+                    rag.StackOnto(stacked[stacked.Count - 1].transform, offset);
+                    stacked[stacked.Count - 1].gameObject.AddComponent<StackInertia>();
+                }
+                else
+                {
+                    rag.StackOnto(stackPoint, offset);
+                }
+                    stacked.Add(rag);
                 rag.gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
-                break;                                   // pega um por vez
+                break;
             }
         }
     }
@@ -42,6 +50,7 @@ public class PlayerStacker : MonoBehaviour
         if (stacked.Count == 0) return;
 
         EnemyRagdoll rag = stacked[^1];
+        Destroy(rag.gameObject.GetComponent<StackInertia>());
         stacked.RemoveAt(stacked.Count - 1);
 
         rag.UnstackAndDrop();                            // cai naturalmente, Boy separado
