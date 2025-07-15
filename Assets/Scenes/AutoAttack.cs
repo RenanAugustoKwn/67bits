@@ -1,3 +1,4 @@
+Ôªøusing System.Collections;
 using UnityEngine;
 
 public class AutoAttack : MonoBehaviour
@@ -6,7 +7,7 @@ public class AutoAttack : MonoBehaviour
     public float attackCooldown = 1f;
     private float lastAttack;
 
-    [Header("AnimaÁ„o")]
+    [Header("Anima√ß√£o")]
     public Animator animator;
 
     void Update()
@@ -20,7 +21,7 @@ public class AutoAttack : MonoBehaviour
             if (rag != null && !rag.isRagdolled)
             {
                 PunchAnimation();
-                rag.ActivateRagdoll();
+                StartCoroutine(DelayActivateRagdoll(rag.gameObject, 0.5f));
                 lastAttack = Time.time;
                 break;
             }
@@ -35,12 +36,20 @@ public class AutoAttack : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Animator n„o atribuÌdo ou desativado.");
+            Debug.LogWarning("Animator n√£o atribu√≠do ou desativado.");
         }
     }
     void ResetPunchBool()
     {
         animator.SetBool("Punch", false);
+    }
+    IEnumerator DelayActivateRagdoll(GameObject enemy, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Vector3 direction = (enemy.transform.position - transform.position).normalized;
+        float punchForce = 100f;
+        enemy.GetComponent<EnemyRagdoll>().ActivateRagdoll(direction * punchForce);
+
     }
 
 #if UNITY_EDITOR

@@ -9,7 +9,7 @@ public class EnemyHitbox : MonoBehaviour
     {
         if (other.CompareTag("PlayerFist"))   // ou “Player” se estiver usando OverlapSphere
         {
-            ragdoll.ActivateRagdoll();
+            //ragdoll.ActivateRagdoll();
         }
     }
 }

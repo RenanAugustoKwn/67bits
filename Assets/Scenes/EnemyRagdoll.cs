@@ -21,13 +21,13 @@ public class EnemyRagdoll : MonoBehaviour
     }
 
     /* ---------- Derrubar ---------- */
-    public void ActivateRagdoll()
+    public void ActivateRagdoll(Vector3 forceDirection)
     {
         if (isRagdolled) return;
 
-        boyRoot.SetParent(null);                       // Boy sai da hierarquia
+        boyRoot.SetParent(null); // Boy sai da hierarquia
 
-        foreach (var rb in ragdollBodies)              // física ON
+        foreach (var rb in ragdollBodies) // Ativa física
         {
             rb.isKinematic = false;
             var c = rb.GetComponent<Collider>();
@@ -37,14 +37,20 @@ public class EnemyRagdoll : MonoBehaviour
         var anim = boyRoot.GetComponentInChildren<Animator>();
         if (anim) Destroy(anim);
 
-        if (capsuleCol) 
-        { 
-            capsuleCol.isTrigger = true; // evita colisão com ragdoll
+        if (capsuleCol)
+        {
+            capsuleCol.isTrigger = true; // evita colisão com o ragdoll
             rigidbodyEnemy.constraints = RigidbodyConstraints.FreezeAll;
-        }   
+        }
 
         isRagdolled = true;
         isStacked = false;
+
+        // ✅ Aplica a força no primeiro Rigidbody (Hips)
+        if (ragdollBodies.Length > 0)
+        {
+            ragdollBodies[0].AddForce(forceDirection, ForceMode.Impulse);
+        }
     }
 
     /* ---------- Enemy segue o Hips ---------- */
@@ -111,8 +117,8 @@ public class EnemyRagdoll : MonoBehaviour
             delivered = true;
             var gameController = FindAnyObjectByType<GameController>();
             gameController.AddCoins(1);
-            Destroy(boyRoot.gameObject, 2f);
-            Destroy(gameObject,2.3f);                       // remove Enemy inteiro
+            Destroy(boyRoot.gameObject, 1f);
+            Destroy(gameObject,1.3f);                       // remove Enemy inteiro
         }
     }
 }
