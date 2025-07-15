@@ -47,7 +47,6 @@ public class EnemyRagdoll : MonoBehaviour
         isRagdolled = true;
         isStacked = false;
 
-        // ✅ Aplica a força no primeiro Rigidbody (Hips)
         if (ragdollBodies.Length > 0)
         {
             ragdollBodies[0].AddForce(forceDirection, ForceMode.Impulse);

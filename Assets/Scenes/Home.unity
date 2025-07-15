@@ -24218,7 +24218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coins: 0
-  level: 10
+  level: 1
   character_man: {fileID: 443882821}
   levelMaterials:
   - {fileID: 2100000, guid: 9d453a4066f815e43a62e11f3c14c2eb, type: 2}
@@ -41315,9 +41315,10 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1298062076}
+  - {fileID: 106536095}
+  - {fileID: 4866293285233107918}
   - {fileID: 657785161}
   - {fileID: 645545264}
-  - {fileID: 4866293285233107918}
   - {fileID: 6234581863966223849}
   - {fileID: 772832764}
   - {fileID: 1041103251}
@@ -41347,5 +41348,4 @@ SceneRoots:
   - {fileID: 1112585097}
   - {fileID: 1848186109}
   - {fileID: 894310891}
-  - {fileID: 106536095}
   - {fileID: 719316924}

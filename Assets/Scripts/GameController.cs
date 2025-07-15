@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
     }
     private void AttText()
     {
-        coinstextMeshPro.text = "Coins = " + coins.ToString();
+        coinstextMeshPro.text = "Moedas = " + coins.ToString();
         leveltextMeshPro.text = "Level = " + level.ToString();
     }
     private void ApplyMaterialForLevel()

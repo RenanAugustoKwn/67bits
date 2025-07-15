@@ -28,7 +28,6 @@ public class StackInertia : MonoBehaviour
         previousParentPosition = transform.parent.position;
         initialLocalRotation = transform.localRotation;
 
-        // Calcula o nível na pilha (lógica de hierarquia pai-filho encadeada)
         // Isso assume que o "pai" direto é o nível abaixo na pilha
         Transform current = transform.parent;
         while (current != null && current.GetComponent<StackInertia>() != null)
@@ -46,9 +45,6 @@ public class StackInertia : MonoBehaviour
         previousParentPosition = currentParentPosition;
 
         // --- CORREÇÃO PRINCIPAL: TRANSFORMAR VELOCIDADE PARA O ESPAÇO LOCAL DO PAI ---
-        // A velocidade global é convertida para a direção relativa à rotação do pai.
-        // Isso garante que a inércia seja aplicada "para trás" ou "para os lados"
-        // em relação à ORIENTAÇÃO ATUAL do pai.
         Vector3 parentVelocityLocal = Quaternion.Inverse(transform.parent.rotation) * parentVelocityGlobal;
 
 
@@ -59,14 +55,10 @@ public class StackInertia : MonoBehaviour
         currentInertiaStrength *= curvatureMultiplier;
 
         // --- CALCULA A ROTAÇÃO DE INÉRCIA USANDO A VELOCIDADE LOCALIZADA ---
-        // Invertemos os sinais para inércia oposta ao movimento
-        // Usamos parentVelocityLocal.z para o eixo X e parentVelocityLocal.x para o eixo Y e Z.
-        // Note: Se o parentVelocityLocal.x é usado para Y e Z, a guinada e o roll serão correlacionados.
-        // Se preferir o roll (eixo Z) independente, pode usar outro componente da velocidade ou ajustá-lo.
         Quaternion targetRotation = Quaternion.Euler(
-            -parentVelocityLocal.z * currentInertiaStrength, // Rotação no Eixo X (Pitch) - Inclina para trás/frente em relação ao pai
-            -parentVelocityLocal.x * currentInertiaStrength, // Rotação no Eixo Y (Yaw) - Inverte para esquerda/direita em relação ao pai
-            parentVelocityLocal.x * currentInertiaStrength  // Rotação no Eixo Z (Roll) - Inclina para os lados em relação ao pai
+            -parentVelocityLocal.z * currentInertiaStrength, // Rotação no Eixo X (Pitch)
+            -parentVelocityLocal.x * currentInertiaStrength, // Rotação no Eixo Y (Yaw)
+            parentVelocityLocal.x * currentInertiaStrength  // Rotação no Eixo Z (Roll)
         );
 
         // Limita o ângulo de inclinação e guinada
@@ -79,7 +71,6 @@ public class StackInertia : MonoBehaviour
         targetRotation = Quaternion.Euler(eulerAngles);
 
         // Aplica o amortecimento para que a rotação retorne ao normal suavemente.
-        // O baixo valor de 'damping' aqui é crucial para o efeito "corda".
         transform.localRotation = Quaternion.Slerp(transform.localRotation, initialLocalRotation * targetRotation, Time.deltaTime * damping);
     }
 
