@@ -5,9 +5,9 @@ public class StackInertia : MonoBehaviour
 {
     [Header("Configurações da Inércia")]
     public float baseInertiaStrength = 1f;
-    public float inertiaIncreasePerLevel = 2f;
+    public float inertiaIncreasePerLevel = 3f;
     public float damping = 5f;
-    public float maxTiltAngle = 25f;
+    public float maxTiltAngle = 30f;
     public float maxYawAngle = 5f;
 
     [Header("Efeito Arcado (Ajuste para Curvatura)")]
