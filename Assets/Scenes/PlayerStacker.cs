@@ -28,7 +28,7 @@ public class PlayerStacker : MonoBehaviour
             if (rag != null && rag.isRagdolled && !rag.isStacked)
             {
                 Vector3 offset = Vector3.up * (stackSpacingY);
-                if(stacked.Count != 0)
+                if (stacked.Count != 0)
                 {
                     rag.StackOnto(stacked[stacked.Count - 1].transform, offset);
                     stacked[stacked.Count - 1].gameObject.AddComponent<StackInertia>();
@@ -37,7 +37,7 @@ public class PlayerStacker : MonoBehaviour
                 {
                     rag.StackOnto(stackPoint, offset);
                 }
-                    stacked.Add(rag);
+                stacked.Add(rag);
                 rag.gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
                 break;
             }
@@ -54,15 +54,6 @@ public class PlayerStacker : MonoBehaviour
         stacked.RemoveAt(stacked.Count - 1);
 
         rag.UnstackAndDrop();                            // cai naturalmente, Boy separado
-    }
 
-    /* ---------- Entregar em DeliveryZone ---------- */
-    public int DeliverEnemies()
-    {
-        int n = stacked.Count;
-        foreach (var r in stacked)
-            if (r) Destroy(r.gameObject);
-        stacked.Clear();
-        return n;
     }
 }

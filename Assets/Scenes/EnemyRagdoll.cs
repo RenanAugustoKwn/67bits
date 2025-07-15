@@ -109,6 +109,8 @@ public class EnemyRagdoll : MonoBehaviour
         if (!delivered && other.CompareTag("GreenGround"))
         {
             delivered = true;
+            var gameController = FindAnyObjectByType<GameController>();
+            gameController.AddCoins(1);
             Destroy(boyRoot.gameObject, 2f);
             Destroy(gameObject,2.3f);                       // remove Enemy inteiro
         }
